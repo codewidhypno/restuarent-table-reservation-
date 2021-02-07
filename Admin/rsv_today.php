@@ -1,37 +1,12 @@
 <?php
 
-include 'Includes/connect.php';
+require 'Includes/connect.php';
 
-if(isset($_POST['submit'])){
-
-   $x1      = $_POST['x1'];
-   $y1      = $_POST['y1'];
-   $x2      = $_POST['x2'];
-   $y2      = $_POST['y2'];
-   $x3      = $_POST['x3'];
-   $y3      = $_POST['y3'];
-   $x4      = $_POST['x4'];
-   $y4      = $_POST['y4'];
-   $map_id  = $_POST['seat_map'];
-   $tc      = $_POST['total_chairs'];
-   $status  = '1';
-
-   $sql     = "INSERT INTO tbl_hotspot_coods(seat_map_id, x1, y1, x2, y2, x3, y3, x4, y4, Total_chairs, Status) VALUES('$map_id','$x1','$y1','$x2','$y2','$x3','$y3','$x4','$y4','$tc','$status')";
-   $exec    = mysqli_query($con,$sql);
-   if($exec){
-       echo"<script>alert('New Table Added');</script>";
-       echo "<script>location.href='index.php'</script>";
-   }
-   else{
-    echo"<script>alert('Somethging Went Wrong');</script>";
-    echo "<script>location.href='#'</script>";
-   }
-}
+$date   = date("Y-m-d");
+$query      = "SELECT * FROM tbl_reservation_master  ";
+$execQuery  = mysqli_query($con,$query);
 
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -77,7 +52,7 @@ if(isset($_POST['submit'])){
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts" ><div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>   
                             Reservations<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div></a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav"><a class="nav-link" href="rsv_today.php">Today Reservations</a><!--<a class="nav-link" href="schedule.php">Schedule</a></nav> -->
+                                <nav class="sb-sidenav-menu-nested nav"><a class="nav-link" href="#">Today Reservations</a><!--<a class="nav-link" href="schedule.php">Schedule</a></nav> -->
                             </div>
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages"
                                 ><div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
@@ -97,7 +72,7 @@ if(isset($_POST['submit'])){
                         </div>
                     </div>
                     <div class="sb-sidenav-footer" id="dash_clock">
-                       
+                        
                     </div>
                 </nav>
             </div>
@@ -108,78 +83,41 @@ if(isset($_POST['submit'])){
                        
                         
                         <div class="card mb-4">
-                            <div class="card-header"><i class="fas fa-table mr-1"></i>NEW TABLE</div>
+                            <div class="card-header"><i class="fas fa-table mr-1"></i>TODAY'S RESERVATIONS</div>
                             <div class="card-body">
-                                <!-- <div class="table-responsive"> -->
-                                    <form method="post" action="#">
-                                        <div class="form-row">
-                                            <div class="form-group col-md-3">
-                                            <label for="inputEmail4">x1</label>
-                                            <input type="text" class="form-control" name="x1" required>
-                                            </div>
-                                            <div class="form-group col-md-3">
-                                            <label for="inputPassword4">y1</label>
-                                            <input type="text" class="form-control"  name="y1"" required>
-                                            </div>
-                                            <div class="form-group col-md-3">
-                                            <label for="inputPassword4">x2</label>
-                                            <input type="text" class="form-control"  name="x2" required>
-                                            </div>
-                                            <div class="form-group col-md-3">
-                                            <label for="inputPassword4">y2</label>
-                                            <input type="text" class="form-control"  name="y2" required>
-                                            </div>
-                                            
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-md-3">
-                                            <label for="inputEmail4">x3</label>
-                                            <input type="text" class="form-control"  name="x3" required>
-                                            </div>
-                                            <div class="form-group col-md-3">
-                                            <label for="inputPassword4">y3</label>
-                                            <input type="text" class="form-control" name="y3" required>
-                                            </div>
-                                            <div class="form-group col-md-3">
-                                            <label for="inputPassword4">x4</label>
-                                            <input type="text" class="form-control" name="x4" required>
-                                            </div>
-                                            <div class="form-group col-md-3">
-                                            <label for="inputPassword4">y4</label>
-                                            <input type="text" class="form-control" name="y4" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6">
-                                            <label for="inputEmail4">Seat Map</label>                                           
-                                            <select class="form-control" name="seat_map" required>
-                                            <?php
-                                                include "Includes/connect.php";
-
-                                                $sql   = "select * from tbl_seat_map where map_status = '1' ";
-                                                $exec  = mysqli_query($con,$sql);
-                                                ?>
-                                                <?php
-                                                while($rows = mysqli_fetch_array($exec)){?>
-                                                    <option value="<?php echo $rows['seat_map_id'];?>"><?php echo $rows['seat_map_id'];?></option>
-                                                }  
-                                            ?>
-                                            </select>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered"  width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Customer Name</th>
+                                                <th>Email</th>
+                                                <th>Contact</th>
+                                                <th>Reservation Date</th>
+                                                <th>Total Person(s)</th>
+                                                <!-- <th>Action</th> -->
+                                            </tr>
+                                        </thead>
+                                        <?php
+                                            while ($row = mysqli_fetch_assoc($execQuery)) {
+                                        ?>
+                                        <tbody>
+                                            <tr>
+                                                <td><?php echo $row['customer_firstname']; ?></td>
+                                                <td><?php echo $row['customer_email']; ?></td>
+                                                <td><?php echo $row['customer_mobile']; ?></td>
+                                                <td><?php echo $row['reservation_date']; ?></td>
+                                                <td><?php echo $row['person_count']; ?></td>
+                                                <!-- <td><a href='editbooking.php?key1=<?php echo $row["id"]; ?>' style="text-decoration:none;">Confirm</a> </td> -->
+                                            </tr>
+                                        </tbody>
                                             <?php };?>
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                            <label for="inputPassword4">Total Chairs</label>
-                                            <input type="text" class="form-control" name="total_chairs" required>
-                                            </div>
-                                            </div>
-                                        <input type="submit" class="btn btn-primary" value="Add" name="submit">
-                                    </form>
-                                <!-- </div> -->
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </main>
-                
+               
             </div>
         </div>
         <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
@@ -210,4 +148,3 @@ if(isset($_POST['submit'])){
         </script>
     </body>
 </html>
-                                           
