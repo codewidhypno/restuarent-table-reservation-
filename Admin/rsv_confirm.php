@@ -25,10 +25,10 @@ if($execQuery){
     $mail->Host = "smtp.gmail.com";
     $mail->SMTPAuth = "true";
     $mail->Port = "587";
-    $mail->Username  = "bibinbbm26@gmail.com";
-    $mail->Password  = "Num#Py75";
+    $mail->Username  = "email";
+    $mail->Password  = "password";
     $mail->Subject   = "Reservation Confirmed";
-    $mail->setFrom("bibinbbm26@gmail.com");
+    $mail->setFrom("email");
     $mail->Body = "Hello , your reservation request has been approved.Thank You For Choosing Us.";
     while($row = mysqli_fetch_array($exec)){
         $mail->AddAddress($row['auth_email']);
